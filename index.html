@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Биржа игровых ценностей</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Добро пожаловать на биржу игровых ценностей!</h1>
+    <button class="button" id="buyItemBtn">Купить товар</button>
+    <button class="button" id="sellItemBtn">Продать товар</button>
+
+    <script>
+        // Обработчики для кнопок
+        document.getElementById('buyItemBtn').addEventListener('click', function() {
+            alert('Вы выбрали кнопку "Купить товар"!');
+        });
+
+        document.getElementById('sellItemBtn').addEventListener('click', function() {
+            alert('Вы выбрали кнопку "Продать товар"!');
+        });
+    </script>
+
+</body>
+</html>
