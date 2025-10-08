@@ -11,7 +11,19 @@
             padding: 20px;
         }
 
-        /* Стили для аватарки пользователя */
+        /* Стили для аватарки пользователя как загрузочного экрана */
+        .loader {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto;
+            background-size: cover;
+            background-position: center;
+            background-color: #ddd; /* Цвет фона для загрузки */
+            display: block;
+        }
+
+        /* Стили для профиля пользователя */
         .profile {
             display: none;
             margin-top: 20px;
@@ -32,18 +44,12 @@
             font-size: 18px;
             color: #555;
         }
-
-        /* Сообщение о загрузке */
-        .loading {
-            font-size: 18px;
-            color: #555;
-        }
     </style>
 </head>
 <body>
 
-    <!-- Сообщение, пока данные загружаются -->
-    <div id="loading" class="loading">Загрузка...</div>
+    <!-- Аватарка пользователя как индикатор загрузки -->
+    <div id="loader" class="loader"></div> <!-- Загрузка аватаркой пользователя -->
 
     <!-- Профиль пользователя -->
     <div id="profile" class="profile">
@@ -53,9 +59,12 @@
     </div>
 
     <script>
-        window.onload = () => {
-            // Пока загружаются данные, показываем сообщение "Загрузка"
-            document.getElementById('loading').style.display = 'block';
+        window.onload = function () {
+            // Получаем аватарку и имя пользователя
+            const defaultImage = 'https://via.placeholder.com/80';  // Заглушка для аватарки, пока не получены данные
+
+            // Показать аватарку как индикатор загрузки
+            document.getElementById('loader').style.backgroundImage = `url(${defaultImage})`;
 
             // Проверяем доступность Telegram Web App
             if (window.Telegram) {
@@ -63,16 +72,16 @@
                 const user = window.Telegram.WebApp.initDataUnsafe;  // Получаем данные пользователя
 
                 if (user) {
-                    // Скрываем сообщение о загрузке
-                    document.getElementById('loading').style.display = 'none';
+                    // Скрываем индикатор загрузки (аватарку)
+                    document.getElementById('loader').style.display = 'none';
 
                     // Показываем профиль пользователя
                     document.getElementById('profile').style.display = 'block';
 
-                    // Заменяем аватарку на реальную
-                    document.getElementById('profile-pic').src = user.photo_url || '';  // Фото профиля из Telegram
-                    document.getElementById('username').innerText = user.first_name || 'Имя пользователя';  // Имя пользователя из Telegram
-                    document.getElementById('balance').innerText = `Баланс: ${user.balance || 'Неизвестен'}`;  // Баланс пользователя, если передан
+                    // Заменяем аватарку на реальную из Telegram
+                    document.getElementById('profile-pic').src = user.photo_url || '';  // Фото профиля
+                    document.getElementById('username').innerText = user.first_name || 'Имя пользователя';  // Имя пользователя
+                    document.getElementById('balance').innerText = `Баланс: ${user.balance || 'Неизвестен'}`;  // Баланс пользователя
                 } else {
                     console.error("Данные пользователя не получены!");
                 }
