@@ -49,6 +49,7 @@
     <!-- Аватарка пользователя как иконка загрузки -->
     <div id="loader" class="loader" style="background-image: url('https://via.placeholder.com/80');"></div> <!-- Заменить URL на фото пользователя -->
 
+    <!-- Профиль пользователя -->
     <div id="profile" class="profile">
         <img id="profile-pic" src="" alt="Profile Picture">
         <h2 id="username"></h2>
@@ -58,7 +59,7 @@
     <script>
         // Инициализация Web App
         window.onload = () => {
-            // Имитируем загрузку и показываем аватарку пользователя
+            // Показываем аватарку пользователя в процессе загрузки
             const userProfilePic = 'https://via.placeholder.com/80';  // Заменить на реальный URL аватарки
             document.getElementById('loader').style.backgroundImage = `url(${userProfilePic})`;
 
@@ -68,15 +69,19 @@
             // Показываем профиль пользователя
             document.getElementById('profile').style.display = 'block';
 
-            // Получаем данные профиля пользователя из Telegram Web App
+            // Проверяем доступность Telegram Web App
             if (window.Telegram) {
                 window.Telegram.WebApp.init(); // Инициализация WebApp
-                const user = window.Telegram.WebApp.initDataUnsafe;
+                const user = window.Telegram.WebApp.initDataUnsafe; // Получаем данные пользователя
 
-                // Отображаем данные
-                document.getElementById('profile-pic').src = user.photo_url || 'https://via.placeholder.com/80'; // Поставить фото профиля
-                document.getElementById('username').innerText = user.first_name || 'Имя пользователя';
-                document.getElementById('balance').innerText = `Баланс: ${user.balance || 'Неизвестен'}`; // Можно изменить на динамическое получение баланса
+                if (user) {
+                    // Отображаем данные профиля пользователя
+                    document.getElementById('profile-pic').src = user.photo_url || 'https://via.placeholder.com/80'; // Фото профиля
+                    document.getElementById('username').innerText = user.first_name || 'Имя пользователя'; // Имя пользователя
+                    document.getElementById('balance').innerText = `Баланс: ${user.balance || 'Неизвестен'}`; // Баланс (вместо статического значения, можно динамически получать)
+                }
+            } else {
+                console.error('WebApp не инициализировано');
             }
         }
     </script>
