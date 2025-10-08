@@ -12,16 +12,6 @@
         }
 
         /* Стили для аватарки пользователя */
-        .loader {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            margin: 0 auto;
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Стили для профиля */
         .profile {
             display: none;
             margin-top: 20px;
@@ -42,12 +32,18 @@
             font-size: 18px;
             color: #555;
         }
+
+        /* Сообщение о загрузке */
+        .loading {
+            font-size: 18px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Аватарка пользователя как иконка загрузки -->
-    <div id="loader" class="loader" style="background-image: url('https://via.placeholder.com/80');"></div> <!-- Заменить URL на фото пользователя -->
+    <!-- Сообщение, пока данные загружаются -->
+    <div id="loading" class="loading">Загрузка...</div>
 
     <!-- Профиль пользователя -->
     <div id="profile" class="profile">
@@ -57,33 +53,33 @@
     </div>
 
     <script>
-        // Инициализация Web App
         window.onload = () => {
-            // Показываем аватарку пользователя в процессе загрузки
-            const userProfilePic = 'https://via.placeholder.com/80';  // Заменить на реальный URL аватарки
-            document.getElementById('loader').style.backgroundImage = `url(${userProfilePic})`;
-
-            // Убираем иконку загрузки
-            document.getElementById('loader').style.display = 'none';
-
-            // Показываем профиль пользователя
-            document.getElementById('profile').style.display = 'block';
+            // Пока загружаются данные, показываем сообщение "Загрузка"
+            document.getElementById('loading').style.display = 'block';
 
             // Проверяем доступность Telegram Web App
             if (window.Telegram) {
-                window.Telegram.WebApp.init(); // Инициализация WebApp
-                const user = window.Telegram.WebApp.initDataUnsafe; // Получаем данные пользователя
+                window.Telegram.WebApp.init();  // Инициализация WebApp
+                const user = window.Telegram.WebApp.initDataUnsafe;  // Получаем данные пользователя
 
                 if (user) {
-                    // Отображаем данные профиля пользователя
-                    document.getElementById('profile-pic').src = user.photo_url || 'https://via.placeholder.com/80'; // Фото профиля
-                    document.getElementById('username').innerText = user.first_name || 'Имя пользователя'; // Имя пользователя
-                    document.getElementById('balance').innerText = `Баланс: ${user.balance || 'Неизвестен'}`; // Баланс (вместо статического значения, можно динамически получать)
+                    // Скрываем сообщение о загрузке
+                    document.getElementById('loading').style.display = 'none';
+
+                    // Показываем профиль пользователя
+                    document.getElementById('profile').style.display = 'block';
+
+                    // Заменяем аватарку на реальную
+                    document.getElementById('profile-pic').src = user.photo_url || '';  // Фото профиля из Telegram
+                    document.getElementById('username').innerText = user.first_name || 'Имя пользователя';  // Имя пользователя из Telegram
+                    document.getElementById('balance').innerText = `Баланс: ${user.balance || 'Неизвестен'}`;  // Баланс пользователя, если передан
+                } else {
+                    console.error("Данные пользователя не получены!");
                 }
             } else {
-                console.error('WebApp не инициализировано');
+                console.error("WebApp не инициализировано");
             }
-        }
+        };
     </script>
 
 </body>
