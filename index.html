@@ -11,40 +11,74 @@
             padding: 20px;
         }
 
-        h1 {
-            color: #333;
+        /* Стили для аватарки пользователя */
+        .loader {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto;
+            background-size: cover;
+            background-position: center;
         }
 
-        .button {
-            padding: 10px 20px;
-            margin: 10px;
+        /* Стили для профиля */
+        .profile {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .profile img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+        }
+
+        .profile h2 {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+
+        .profile p {
             font-size: 18px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        .button:hover {
-            background-color: #45a049;
+            color: #555;
         }
     </style>
 </head>
 <body>
 
-    <h1>Добро пожаловать на биржу игровых ценностей!</h1>
-    <button class="button" id="buyItemBtn">Купить товар</button>
-    <button class="button" id="sellItemBtn">Продать товар</button>
+    <!-- Аватарка пользователя как иконка загрузки -->
+    <div id="loader" class="loader" style="background-image: url('https://via.placeholder.com/80');"></div> <!-- Заменить URL на фото пользователя -->
+
+    <div id="profile" class="profile">
+        <img id="profile-pic" src="" alt="Profile Picture">
+        <h2 id="username"></h2>
+        <p id="balance"></p>
+    </div>
 
     <script>
-        // Обработчики для кнопок
-        document.getElementById('buyItemBtn').addEventListener('click', function() {
-            alert('Вы выбрали кнопку "Купить товар"!');
-        });
+        // Инициализация Web App
+        window.onload = () => {
+            // Имитируем загрузку и показываем аватарку пользователя
+            const userProfilePic = 'https://via.placeholder.com/80';  // Заменить на реальный URL аватарки
+            document.getElementById('loader').style.backgroundImage = `url(${userProfilePic})`;
 
-        document.getElementById('sellItemBtn').addEventListener('click', function() {
-            alert('Вы выбрали кнопку "Продать товар"!');
-        });
+            // Убираем иконку загрузки
+            document.getElementById('loader').style.display = 'none';
+
+            // Показываем профиль пользователя
+            document.getElementById('profile').style.display = 'block';
+
+            // Получаем данные профиля пользователя из Telegram Web App
+            if (window.Telegram) {
+                window.Telegram.WebApp.init(); // Инициализация WebApp
+                const user = window.Telegram.WebApp.initDataUnsafe;
+
+                // Отображаем данные
+                document.getElementById('profile-pic').src = user.photo_url || 'https://via.placeholder.com/80'; // Поставить фото профиля
+                document.getElementById('username').innerText = user.first_name || 'Имя пользователя';
+                document.getElementById('balance').innerText = `Баланс: ${user.balance || 'Неизвестен'}`; // Можно изменить на динамическое получение баланса
+            }
+        }
     </script>
 
 </body>
